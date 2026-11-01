@@ -13,6 +13,8 @@ import useUpdateTaskStatus from '../hooks/useUpdateTaskStatus'
 import { TaskItemProps } from '../interfaces/TaskItemProps'
 import PriorityBadge from './PriorityBadge'
 import TaskDates from './TaskDates'
+
+// Extends Props for the onDelete
 interface ExtendTaskItemProps extends TaskItemProps {
   onDelete: (id: string) => void
 }
