@@ -30,7 +30,7 @@ export default function ProjectToolbar() {
       <div className='flex items-center gap-3 mb-2'>
         <Image
           priority={true}
-          src='/TaskFlow.png'
+          src='/taskflow.png'
           width={40}
           height={40}
           className='rounded'

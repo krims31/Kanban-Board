@@ -9,7 +9,7 @@ export default function Logo() {
         <div>
           <div className='h-px w-full bg-gray-300 relative top-5.5'></div>
           <Image
-            src='/TaskFlow.png'
+            src='/taskflow.png'
             width={50}
             height={50}
             className='absolute top-2 left-3'
