@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/select'
 import { AlertCircle } from 'lucide-react'
 import { Controller } from 'react-hook-form'
+import { Input } from '../../../components/ui/input'
 import InputProject from '../../../shared/ui/input-project/inputProject'
 import useCreateTask from '../hooks/useCreateTask'
 
@@ -55,10 +56,10 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
           </div>
           <div className='flex flex-col gap-1'>
             <label className='text-sm text-zinc-950 dark:text-slate-300'>Due date</label>
-            <input
+            <Input
               type='date'
               {...register('dueDate')}
-              className='rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-transparent dark:bg-transparent text-muted-foreground dark:text-white'
+              className='rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:text-white'
             />
             {errors.dueDate?.message && (
               <span className='text-xs text-red-500'>{errors.dueDate.message}</span>
