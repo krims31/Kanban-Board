@@ -35,6 +35,7 @@ export default function ProjectToolbar() {
           height={40}
           className='rounded'
           alt='Project icon'
+          unoptimized
         />
         <h1 className='text-2xl text-slate-800 drop-shadow-sm dark:text-white'>
           {currentProject?.title}
