@@ -18,7 +18,7 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
         <InputProject
           registration={register('description')}
           label='Project Description'
-          placeholder='Project Description'
+          placeholder='Project description will be here...'
           error={errors.description?.message}
         />
 
@@ -27,17 +27,11 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
             <label className='text-sm text-slate-600 dark:text-slate-300'>Priority</label>
             <select
               {...register('priority')}
-              className='rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 bg-transparent dark:bg-transparent text-muted-foreground dark:text-white'
+              className='w-full cursor-pointer appearance-none rounded-lg border border-slate-300 bg-transparent px-3 py-2 pr-9 text-sm text-foreground outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700'
             >
-              <option value='LOW' className='dark:bg-transparent text-muted-foreground'>
-                LOW
-              </option>
-              <option value='MEDIUM' className='dark:bg-transparent text-muted-foreground'>
-                MEDIUM
-              </option>
-              <option value='HIGH' className='dark:bg-transparent text-muted-foreground'>
-                HIGH
-              </option>
+              <option value='LOW'>Low</option>
+              <option value='MEDIUM'>Medium</option>
+              <option value='HIGH'>High</option>
             </select>
             {errors.priority?.message && (
               <span className='text-xs text-red-500'>{errors.priority.message}</span>
