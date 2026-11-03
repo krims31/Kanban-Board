@@ -14,6 +14,7 @@ export default function Logo() {
             height={50}
             className='absolute top-2 left-3'
             alt='Picture of the author'
+            unoptimized
           />
           <h1 className='text-lg relative bottom-7 left-18 font-mono text-zinc-950 dark:text-white'>
             TaskFlow
