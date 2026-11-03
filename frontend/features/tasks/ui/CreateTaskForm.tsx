@@ -1,9 +1,17 @@
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
 import { AlertCircle } from 'lucide-react'
+import { Controller } from 'react-hook-form'
 import InputProject from '../../../shared/ui/input-project/inputProject'
 import useCreateTask from '../hooks/useCreateTask'
 
 export default function CreateTaskForm({ projectId }: { projectId: string }) {
-  const { register, errors, serverError, handleSubmit } = useCreateTask(projectId)
+  const { register, errors, serverError, handleSubmit, control } = useCreateTask(projectId)
 
   return (
     <>
@@ -25,14 +33,22 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
         <div className='grid grid-cols-2 gap-3'>
           <div className='flex flex-col gap-1'>
             <label className='text-sm text-zinc-950 dark:text-slate-300'>Priority</label>
-            <select
-              {...register('priority')}
-              className='w-full cursor-pointer appearance-none rounded-lg border border-slate-300 bg-transparent px-3 py-2 pr-9 text-sm text-foreground outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700'
-            >
-              <option value='LOW'>Low</option>
-              <option value='MEDIUM'>Medium</option>
-              <option value='HIGH'>High</option>
-            </select>
+            <Controller
+              name='priority'
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger className='w-full'>
+                    <SelectValue placeholder='Priority' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='LOW'>Low</SelectItem>
+                    <SelectItem value='MEDIUM'>Medium</SelectItem>
+                    <SelectItem value='HIGH'>High</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
             {errors.priority?.message && (
               <span className='text-xs text-red-500'>{errors.priority.message}</span>
             )}
