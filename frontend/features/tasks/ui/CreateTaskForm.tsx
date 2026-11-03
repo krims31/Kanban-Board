@@ -24,7 +24,7 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
 
         <div className='grid grid-cols-2 gap-3'>
           <div className='flex flex-col gap-1'>
-            <label className='text-sm text-slate-600 dark:text-slate-300'>Priority</label>
+            <label className='text-sm text-zinc-950 dark:text-slate-300'>Priority</label>
             <select
               {...register('priority')}
               className='w-full cursor-pointer appearance-none rounded-lg border border-slate-300 bg-transparent px-3 py-2 pr-9 text-sm text-foreground outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700'
@@ -38,7 +38,7 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
             )}
           </div>
           <div className='flex flex-col gap-1'>
-            <label className='text-sm text-slate-600 dark:text-slate-300'>Due date</label>
+            <label className='text-sm text-zinc-950 dark:text-slate-300'>Due date</label>
             <input
               type='date'
               {...register('dueDate')}
