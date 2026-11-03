@@ -9,6 +9,7 @@ export default function useCreateTask(projectId: string) {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors }
   } = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
@@ -50,6 +51,7 @@ export default function useCreateTask(projectId: string) {
     register,
     errors,
     handleSubmit: handleSubmit(onSubmit),
-    serverError
+    serverError,
+    control
   }
 }
