@@ -17,7 +17,6 @@ export default function useAuthRegister() {
 
   const [serverError, setServerError] = useState<string | null>(null)
 
-  // Register submit
   const onSubmit = async (data: RegisterFormValues) => {
     try {
       await ApiClient('/auth/register', {
