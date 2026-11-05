@@ -24,6 +24,7 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
           error={errors.title?.message}
         />
 
+        {/* Project description */}
         <InputProject
           registration={register('description')}
           label='Project Description'
