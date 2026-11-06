@@ -85,7 +85,10 @@ export default function ProjectToolbar() {
               <DialogHeader>
                 <DialogTitle>New Task</DialogTitle>
               </DialogHeader>
-              <CreateTaskForm projectId={projectId as string} />
+              <CreateTaskForm
+                projectId={projectId as string}
+                onCancel={() => setIsTaskDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         </div>
