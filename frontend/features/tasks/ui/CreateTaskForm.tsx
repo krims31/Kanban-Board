@@ -1,15 +1,8 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { AlertCircle } from 'lucide-react'
-import { Controller } from 'react-hook-form'
 import { Input } from '../../../components/ui/input'
 import InputProject from '../../../shared/ui/input-project/inputProject'
 import useCreateTask from '../hooks/useCreateTask'
+import PriorityController from './PriorityController'
 
 export default function CreateTaskForm({ projectId }: { projectId: string }) {
   const { register, errors, serverError, handleSubmit, control } = useCreateTask(projectId)
@@ -33,28 +26,7 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
         />
 
         <div className='grid grid-cols-2 gap-3'>
-          <div className='flex flex-col gap-1'>
-            <label className='text-sm text-zinc-950 dark:text-slate-300'>Priority</label>
-            <Controller
-              name='priority'
-              control={control}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Priority' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value='LOW'>Low</SelectItem>
-                    <SelectItem value='MEDIUM'>Medium</SelectItem>
-                    <SelectItem value='HIGH'>High</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            />
-            {errors.priority?.message && (
-              <span className='text-xs text-red-500'>{errors.priority.message}</span>
-            )}
-          </div>
+          <PriorityController control={control} error={errors.priority?.message} />
           <div className='flex flex-col gap-1'>
             <label className='text-sm text-zinc-950 dark:text-slate-300'>Due date</label>
             <Input
