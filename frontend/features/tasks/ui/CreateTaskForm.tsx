@@ -3,13 +3,12 @@ import InputProject from '../../../shared/ui/input-project/inputProject'
 import useCreateTask from '../hooks/useCreateTask'
 import DueDate from './DueDate'
 import PriorityController from './PriorityController'
-export default function CreateTaskForm({
-  projectId,
-  onCancel
-}: {
+type Props = {
   projectId: string
   onCancel?: () => void
-}) {
+}
+
+export default function CreateTaskForm({ projectId, onCancel }: Props) {
   const { register, errors, serverError, handleSubmit, control } = useCreateTask(projectId)
 
   return (
