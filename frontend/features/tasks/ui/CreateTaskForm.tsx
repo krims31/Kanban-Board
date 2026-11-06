@@ -3,7 +3,13 @@ import InputProject from '../../../shared/ui/input-project/inputProject'
 import useCreateTask from '../hooks/useCreateTask'
 import DueDate from './DueDate'
 import PriorityController from './PriorityController'
-export default function CreateTaskForm({ projectId }: { projectId: string }) {
+export default function CreateTaskForm({
+  projectId,
+  onCancel
+}: {
+  projectId: string
+  onCancel?: () => void
+}) {
   const { register, errors, serverError, handleSubmit, control } = useCreateTask(projectId)
 
   return (
@@ -43,7 +49,7 @@ export default function CreateTaskForm({ projectId }: { projectId: string }) {
         </span>
       </button>
 
-      <button type='submit'>
+      <button type='button' onClick={onCancel}>
         <span className='text-sm font-mono border border-gray-300 dark:border-zinc-700 rounded-lg p-2 text-gray-500 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-gray-700 dark:hover:text-gray-300 outline-none ml-40 relative bottom-0 transition duration-200 cursor-pointer'>
           Cancel
         </span>
