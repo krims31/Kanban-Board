@@ -20,7 +20,6 @@ export default function CreateTaskForm({ projectId, onCancel }: Props) {
         error={errors.title?.message}
       />
 
-      {/* Project description */}
       <InputProject
         registration={register('description')}
         label='Project Description'
