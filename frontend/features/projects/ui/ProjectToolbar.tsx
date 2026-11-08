@@ -10,12 +10,11 @@ import CreateTaskForm from '../../tasks/ui/CreateTaskForm'
 import CurrentProject from './CurrentProject'
 import SearchBar from './SearchBar'
 export default function ProjectToolbar() {
-  const params = useParams()
+  const { id: projectId } = useParams<{ id: string }>()
 
-  const [isTaskDialogOpen, setIsTaskDialogOpen] = useState<boolean>(false)
+  const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false)
 
-  // Get the current project ID from the URL params
-  const projectId = params.id as string | undefined
+  if (!projectId) return null
 
   return (
     <main className='px-1 relative bottom-13'>
@@ -23,7 +22,7 @@ export default function ProjectToolbar() {
       <CurrentProject />
 
       {/* Toolbar */}
-      <div className='flex items-center justify-between mb-2'>
+      <section className='flex items-center justify-between mb-2'>
         <div className='flex gap-4'>
           <KanbanView />
           <ListView />
@@ -34,38 +33,35 @@ export default function ProjectToolbar() {
           {/* Search bar */}
           <SearchBar />
 
-          <div className='mt-10'>
+          <div className='flex items-center gap-3 mt-10'>
             <Button variant='outline' className='flex items-center gap-2'>
               <Settings2 className='h-4 w-4 text-gray-400' />
               <span>Filter</span>
             </Button>
-          </div>
 
-          {/* Open DialogTask that I could write a new task */}
-          <div className='mt-10'>
             <Button
-              onClick={() => setIsTaskDialogOpen(true)}
+              onClick={() => setIsCreateTaskOpen(true)}
               className='flex items-center justify-center gap-2 dark:bg-sidebar-accent'
             >
               <Plus className='h-4 w-4 text-white' />
               <span className='dark:text-white'>Create Task</span>
             </Button>
           </div>
-
-          {/* DialogTask that I could write a new task */}
-          <Dialog open={isTaskDialogOpen} onOpenChange={setIsTaskDialogOpen}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>New Task</DialogTitle>
-              </DialogHeader>
-              <CreateTaskForm
-                projectId={projectId as string}
-                onCancel={() => setIsTaskDialogOpen(false)}
-              />
-            </DialogContent>
-          </Dialog>
         </div>
-      </div>
+      </section>
+      {/* DialogTask that I could write a new task */}
+      <Dialog open={isCreateTaskOpen} onOpenChange={setIsCreateTaskOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>New Task</DialogTitle>
+          </DialogHeader>
+          <CreateTaskForm
+            projectId={projectId as string}
+            onCancel={() => setIsCreateTaskOpen(false)}
+            onSuccess={() => setIsCreateTaskOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Horizontal line */}
       <div className='h-px w-full bg-gray-300 mt-3' />

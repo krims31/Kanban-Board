@@ -6,6 +6,7 @@ import PriorityController from './PriorityController'
 type Props = {
   projectId: string
   onCancel?: () => void
+  onSuccess?: () => void
 }
 
 export default function CreateTaskForm({ projectId, onCancel }: Props) {
