@@ -5,7 +5,9 @@ import { useForm } from 'react-hook-form'
 import { createTasks } from '../api/task-api'
 import { TaskFormValues, taskSchema } from '../schema/task.schema'
 
-export default function useCreateTask(projectId: string) {
+type Options = { onSuccess?: () => void }
+
+export default function useCreateTask(projectId: string, { onSuccess }: Options = {}) {
   const {
     register,
     handleSubmit,
@@ -31,6 +33,7 @@ export default function useCreateTask(projectId: string) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', projectId] })
+      onSuccess?.()
     }
   })
 
@@ -52,6 +55,7 @@ export default function useCreateTask(projectId: string) {
     errors,
     handleSubmit: handleSubmit(onSubmit),
     serverError,
-    control
+    control,
+    isPending: mutation.isPending
   }
 }
