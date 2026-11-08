@@ -1,6 +1,6 @@
 import { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
-
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
+import { usePriorityFilter } from '../../projects/hooks/usePriorityFilter'
 import { TaskStatus } from '../types/TaskType'
 import useProjectId from './useProjectId'
 
@@ -11,9 +11,9 @@ export default function useDragEnd() {
     isPending,
     error,
     todoTasks,
-    projectId,
     inProgressTasks,
     doneTasks,
+    projectId,
     updateStatus,
     deleteTask,
     isActiveTask,
@@ -23,23 +23,39 @@ export default function useDragEnd() {
     pointerSensor
   } = useProjectId()
 
-  // Find the task by ID status lists.
-  const handleDragStart = useCallback(
-    (event: DragStartEvent) => {
-      const id = String(event.active.id)
+  const { priority } = usePriorityFilter()
 
-      const task =
-        todoTasks?.find(t => t.id === id) ??
-        inProgressTasks?.find(t => t.id === id) ??
-        doneTasks?.find(t => t.id === id) ??
-        null
-
-      setIsActiveTask(task)
-    },
+  // 1. All Tasks in the one array.
+  const allTasks = useMemo(
+    () => [...(todoTasks ?? []), ...(inProgressTasks ?? []), ...(doneTasks ?? [])],
     [todoTasks, inProgressTasks, doneTasks]
   )
 
-  const handleDragCancel = useCallback(() => setIsActiveTask(null), [])
+  // 2. Filter by priority (null = all)
+  const filtered = useMemo(
+    () => (priority ? allTasks.filter(t => t.priority === priority) : allTasks),
+    [allTasks, priority]
+  )
+
+  // 3. Splice filter by status - its return in the ProjectId
+  const filteredTodo = useMemo(() => filtered.filter(t => t.status === 'TODO'), [filtered])
+  const filteredInProgress = useMemo(
+    () => filtered.filter(t => t.status === 'IN_PROGRESS'),
+    [filtered]
+  )
+  const filteredDone = useMemo(() => filtered.filter(t => t.status === 'DONE'), [filtered])
+
+  // 4. handleDragStart — find a task by id
+  const handleDragStart = useCallback(
+    (event: DragStartEvent) => {
+      const id = String(event.active.id)
+      const task = filtered.find(t => t.id === id) ?? null
+      setIsActiveTask(task)
+    },
+    [filtered, setIsActiveTask]
+  )
+
+  const handleDragCancel = useCallback(() => setIsActiveTask(null), [setIsActiveTask])
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
@@ -49,7 +65,6 @@ export default function useDragEnd() {
       if (!over || active.id === over.id) return
 
       const overId = String(over.id)
-
       const targetStatus = statuses.includes(overId as TaskStatus)
         ? (overId as TaskStatus)
         : (over.data.current?.status as TaskStatus | undefined)
@@ -61,7 +76,7 @@ export default function useDragEnd() {
 
       updateStatus(String(active.id), targetStatus)
     },
-    [updateStatus]
+    [updateStatus, setIsActiveTask]
   )
 
   return {
@@ -74,9 +89,9 @@ export default function useDragEnd() {
     sensors,
     keyboardSensor,
     pointerSensor,
-    todoTasks,
-    inProgressTasks,
-    doneTasks,
+    todoTasks: filteredTodo,
+    inProgressTasks: filteredInProgress,
+    doneTasks: filteredDone,
     projectId,
     deleteTask
   }
