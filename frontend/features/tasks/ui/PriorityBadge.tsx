@@ -1,6 +1,5 @@
 import { Flag } from 'lucide-react'
-import { PRIORITY_LABEL, PRIORITY_STYLES } from '../constants/priority.const'
-import type { TaskPriority } from '../types/TaskType'
+import { PRIORITY_LABEL, PRIORITY_STYLES, TaskPriority } from '../constants/priority.const'
 
 export default function PriorityBadge({ priority }: { priority: TaskPriority }) {
   return (
