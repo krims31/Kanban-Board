@@ -1,4 +1,5 @@
-import { TaskPriority } from '../types/TaskType'
+export const PRIORITIES = ['LOW', 'MEDIUM', 'HIGH'] as const
+export type TaskPriority = (typeof PRIORITIES)[number]
 
 export const formatDate = (iso: string) => {
   return new Date(iso).toLocaleDateString(undefined, {
