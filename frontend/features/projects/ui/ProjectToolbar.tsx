@@ -1,18 +1,16 @@
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Command, Plus, Search, Settings2 } from 'lucide-react'
+import { Plus, Settings2 } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalendarView from '../../../shared/ui/CalendarView/CalendarView'
 import KanbanView from '../../../shared/ui/KanbanView/KanbanView'
 import ListView from '../../../shared/ui/ListView/ListView'
 import CreateTaskForm from '../../tasks/ui/CreateTaskForm'
-import useInputKeydown from '../hooks/useInputKeydown'
 import CurrentProject from './CurrentProject'
+import SearchBar from './SearchBar'
 export default function ProjectToolbar() {
   const params = useParams()
-  const { searchRef } = useInputKeydown()
 
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState<boolean>(false)
 
@@ -21,6 +19,7 @@ export default function ProjectToolbar() {
 
   return (
     <main className='px-1 relative bottom-13'>
+      {/* CurrentProject */}
       <CurrentProject />
 
       {/* Toolbar */}
@@ -33,14 +32,7 @@ export default function ProjectToolbar() {
 
         <div className='flex items-center gap-3'>
           {/* Search bar */}
-          <div className='relative w-64 mt-10'>
-            <Search className='absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400' />
-            <Input ref={searchRef} placeholder='Search' className='pl-9 pr-14' />
-            <kbd className='pointer-events-none absolute right-3 top-1/2 inline-flex -translate-y-1/2 select-none items-center gap-0.5 rounded-md border bg-muted px-1.5 py-0.5 font-sans text-[11px] font-medium text-muted-foreground shadow-sm'>
-              <Command size={11} strokeWidth={2.25} />
-              <span>K</span>
-            </kbd>
-          </div>
+          <SearchBar />
 
           <div className='mt-10'>
             <Button variant='outline' className='flex items-center gap-2'>
