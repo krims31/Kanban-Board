@@ -9,8 +9,13 @@ type Props = {
   onSuccess?: () => void
 }
 
-export default function CreateTaskForm({ projectId, onCancel }: Props) {
-  const { register, errors, serverError, handleSubmit, control } = useCreateTask(projectId)
+export default function CreateTaskForm({ projectId, onCancel, onSuccess }: Props) {
+  const { register, errors, serverError, handleSubmit, control, isPending } = useCreateTask(
+    projectId,
+    {
+      onSuccess
+    }
+  )
 
   return (
     <form onSubmit={handleSubmit}>
@@ -42,9 +47,9 @@ export default function CreateTaskForm({ projectId, onCancel }: Props) {
         </span>
       )}
 
-      <button type='submit'>
+      <button type='submit' disabled={isPending}>
         <span className='relative top-5 text-sm font-mono border rounded-lg p-2 bg-black text-white outline-none ml-60 hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition duration-300 transform ease-in-out cursor-pointer'>
-          Create Task
+          {isPending ? 'Creating…' : 'Create Task'}
         </span>
       </button>
 
