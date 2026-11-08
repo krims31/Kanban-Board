@@ -1,4 +1,4 @@
-export type TaskPriority = 'LOW' | 'MEDIUM' | 'HIGH'
+import { TaskPriority } from '../constants/priority.const'
 
 export type Task = {
   id: string
