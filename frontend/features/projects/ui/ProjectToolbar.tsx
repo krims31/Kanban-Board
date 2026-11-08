@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Command, Plus, Search, Settings2 } from 'lucide-react'
-import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 import CalendarView from '../../../shared/ui/CalendarView/CalendarView'
@@ -10,37 +9,19 @@ import KanbanView from '../../../shared/ui/KanbanView/KanbanView'
 import ListView from '../../../shared/ui/ListView/ListView'
 import CreateTaskForm from '../../tasks/ui/CreateTaskForm'
 import useInputKeydown from '../hooks/useInputKeydown'
-import useProject from '../hooks/useProject'
-
+import CurrentProject from './CurrentProject'
 export default function ProjectToolbar() {
   const params = useParams()
   const { searchRef } = useInputKeydown()
 
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState<boolean>(false)
 
-  const { project: projects } = useProject()
-
   // Get the current project ID from the URL params
   const projectId = params.id as string | undefined
 
-  const currentProject = projects?.find(project => project.id === projectId)
-
   return (
     <main className='px-1 relative bottom-13'>
-      <div className='flex items-center gap-3 mb-2'>
-        <Image
-          priority={true}
-          src='/taskflow.png'
-          width={40}
-          height={40}
-          className='rounded'
-          alt='Project icon'
-          unoptimized
-        />
-        <h1 className='text-2xl text-slate-800 drop-shadow-sm dark:text-white'>
-          {currentProject?.title}
-        </h1>
-      </div>
+      <CurrentProject />
 
       {/* Toolbar */}
       <div className='flex items-center justify-between mb-2'>
