@@ -38,6 +38,7 @@ export default function ProjectToolbar() {
             {/* Filter Button */}
             <FilterButton />
 
+            {/* Create Task Button */}
             <Button
               onClick={() => setIsCreateTaskOpen(true)}
               className='flex items-center justify-center gap-2 dark:bg-sidebar-accent'
