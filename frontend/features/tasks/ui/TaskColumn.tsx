@@ -1,6 +1,7 @@
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Plus } from 'lucide-react'
+import { memo } from 'react'
 import { TaskColumnProps } from '../interfaces/TaskColumnProps'
 import type { TaskStatus } from '../types/TaskType'
 import { STATUS_CONFIG } from '../types/TaskType'
@@ -10,7 +11,7 @@ interface ExtendedTaskColumnProps extends TaskColumnProps {
   onDeleteTask: (id: string) => void
 }
 
-export default function TaskColumn({
+function TaskColumn({
   projectId,
   status,
   tasks = [],
@@ -22,6 +23,8 @@ export default function TaskColumn({
   const { setNodeRef, isOver } = useDroppable({ id: status })
 
   if (!config) return null
+
+  console.log('TaskColumn render:', status)
 
   return (
     <div
@@ -79,3 +82,5 @@ export default function TaskColumn({
     </div>
   )
 }
+
+export default memo(TaskColumn)
