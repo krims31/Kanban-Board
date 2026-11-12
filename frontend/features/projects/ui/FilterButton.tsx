@@ -12,7 +12,7 @@ import { usePriorityFilter } from '../hooks/usePriorityFilter'
 export default function FilterButton() {
   const { priority, setPriority } = usePriorityFilter()
   return (
-    <>
+    <main>
       <DropdownMenu>
         <DropdownMenuTrigger
           render={
@@ -35,6 +35,6 @@ export default function FilterButton() {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+    </main>
   )
 }
