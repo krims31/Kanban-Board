@@ -107,24 +107,24 @@ describe('ProjectsService', () => {
   describe('findOne', () => {
     it('return project if you find', async () => {
       // What will return the mock.
-      const project = { id: '1', title: 'X', ownerId: 'u1' };
+      const project = { id: 'p1', title: 'X', ownerId: 'u1' };
 
       prisma.project.findFirst.mockResolvedValue(project);
 
       // Act (call result)
-      const result = await service.findOne('1', 'u1');
+      const result = await service.findOne('p1', 'u1');
 
       // Assert (verification)
       expect(result).toEqual(project);
       expect(prisma.project.findFirst).toHaveBeenCalledWith({
-        where: { id: '1', ownerId: 'u1' },
+        where: { id: 'p1', ownerId: 'u1' },
       });
     });
 
     it('throw NotFoundException if project not found', async () => {
       prisma.project.findFirst.mockResolvedValue(null);
 
-      await expect(service.findOne('1', 'u1')).rejects.toThrow(
+      await expect(service.findOne('p1', 'u1')).rejects.toThrow(
         NotFoundException,
       );
     });
@@ -133,15 +133,15 @@ describe('ProjectsService', () => {
   describe('update', () => {
     it('update a project', async () => {
       // What will return the mock.
-      prisma.project.findFirst.mockResolvedValue({ id: '1', ownerId: 'u1' });
+      prisma.project.findFirst.mockResolvedValue({ id: 'p1', ownerId: 'u1' });
 
-      prisma.project.update.mockResolvedValue({ id: '1', title: 'New' });
+      prisma.project.update.mockResolvedValue({ id: 'p1', title: 'New' });
 
       // Act(call result)
-      const result = await service.update('1', 'u1', { title: 'New' });
+      const result = await service.update('p1', 'u1', { title: 'New' });
 
       // Assert (verification)
-      expect(result).toEqual({ id: '1', title: 'New' });
+      expect(result).toEqual({ id: 'p1', title: 'New' });
       expect(prisma.project.findFirst).toHaveBeenCalled();
       expect(prisma.project.update).toHaveBeenCalledWith({
         where: { id: 'p1' },
