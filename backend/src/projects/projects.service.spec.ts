@@ -161,11 +161,14 @@ describe('ProjectsService', () => {
 
   describe('delete', () => {
     it('delete a project, if he exist and belong the user', async () => {
+      // What will return the mock.
       prisma.project.findFirst.mockResolvedValue({ id: 'p1', ownerId: 'u1' });
       prisma.project.delete.mockResolvedValue({ id: 'p1' });
 
+      // Act(call result)
       await service.delete('p1', 'u1');
 
+      // Assert (verification)
       expect(prisma.project.delete).toHaveBeenCalledWith({
         where: { id: 'p1' },
       });
