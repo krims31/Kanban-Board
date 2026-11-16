@@ -1,5 +1,5 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { JwtService, TokenExpiredError } from '@nestjs/jwt';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { CreateDto } from '../dto/CreateDto.dto';
 import { LoginDto } from '../dto/LoginDto.dto';
@@ -7,6 +7,7 @@ import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
@@ -19,40 +20,51 @@ export class AuthService {
 
   // Update token
   async refreshToken(refreshToken: string) {
+    let payload: { sub: string };
     try {
-      const payload = this.jwtService.verify<{ sub: string }>(refreshToken, {
+      payload = this.jwtService.verify<{ sub: string }>(refreshToken, {
         secret: process.env.JWT_REFRESH_SECRET,
+        algorithms: ['HS256'],
       });
-
-      const user = await this.usersService.findById(payload.sub);
-
-      if (!user) {
-        throw new UnauthorizedException('Invalid refresh token');
-      }
-
-      const isValid = await bcrypt.compare(
-        refreshToken,
-        user.refreshTokenHash || '',
-      );
-
-      if (!isValid) {
-        throw new UnauthorizedException('Invalid refresh token');
-      }
-
-      return {
-        access_token: this.jwtService.sign({
-          sub: user.id,
-          email: user.email,
-          role: user.role,
-        }),
-      };
     } catch (error) {
       if (error instanceof TokenExpiredError) {
         throw new UnauthorizedException('Refresh token expired');
-      } else {
+      }
+
+      if (error instanceof JsonWebTokenError) {
         throw new UnauthorizedException('Invalid refresh token');
       }
+
+      this.logger.error('Unexpected error during token verify', error);
+      throw error;
     }
+
+    // If DataBase throw, so will be 500 response.
+    const user = await this.usersService.findById(payload.sub);
+
+    if (!user) {
+      this.logger.warn(`Refresh attempt for unknown user: ${payload.sub}`);
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    const isValid = await bcrypt.compare(
+      refreshToken,
+      user.refreshTokenHash ?? '',
+    );
+
+    // Token valid by sign, but not compare with save hash, so was logout with the other device
+    if (!isValid) {
+      this.logger.warn(`Refresh token mismatch for user; ${user.id}`);
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+
+    return {
+      access_token: this.jwtService.sign({
+        sub: user.id,
+        email: user.email,
+        role: user.role,
+      }),
+    };
   }
 
   // Login user
