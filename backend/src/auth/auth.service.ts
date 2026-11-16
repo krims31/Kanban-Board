@@ -1,5 +1,5 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
-import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { CreateDto } from '../dto/CreateDto.dto';
 import { LoginDto } from '../dto/LoginDto.dto';
@@ -27,11 +27,11 @@ export class AuthService {
         algorithms: ['HS256'],
       });
     } catch (error) {
-      if (error instanceof TokenExpiredError) {
+      if (error instanceof Error && error.name === 'TokenExpiredError') {
         throw new UnauthorizedException('Refresh token expired');
       }
 
-      if (error instanceof JsonWebTokenError) {
+      if (error instanceof Error && error.name === 'JsonWebTokenError') {
         throw new UnauthorizedException('Invalid refresh token');
       }
 
