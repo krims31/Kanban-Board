@@ -11,10 +11,10 @@ export class TasksService {
     private readonly projectsService: ProjectsService,
   ) {}
 
-  // Create a tasks.
+  // Create a task.
   async create(dto: CreateTaskDto, projectId: string, ownerId: string) {
     await this.projectsService.findOne(projectId, ownerId);
-    return await this.prisma.task.create({
+    return this.prisma.task.create({
       data: {
         title: dto.title,
         description: dto.description ?? null,
@@ -25,13 +25,13 @@ export class TasksService {
     });
   }
 
-  // Find all a tasks the project.
+  // Find all a task the project.
   async findAllByProject(projectId: string, ownerId: string) {
     await this.projectsService.findOne(projectId, ownerId);
-    return await this.prisma.task.findMany({ where: { projectId } });
+    return this.prisma.task.findMany({ where: { projectId } });
   }
 
-  // Find one a tasks the project.
+  // Find one a task the project.
   async findOne(id: string, projectId: string, ownerId: string) {
     await this.projectsService.findOne(projectId, ownerId);
     const task = await this.prisma.task.findFirst({
@@ -44,7 +44,7 @@ export class TasksService {
     return task;
   }
 
-  // Update a tasks the project.
+  // Update a task the project.
   async update(
     id: string,
     projectId: string,
@@ -53,17 +53,17 @@ export class TasksService {
   ) {
     await this.findOne(id, projectId, ownerId);
 
-    return await this.prisma.task.update({
+    return this.prisma.task.update({
       where: { id },
       data: dto,
     });
   }
 
-  // Delete a tasks the project.
+  // Delete a task the project.
   async delete(id: string, projectId: string, ownerId: string) {
     await this.findOne(id, projectId, ownerId);
 
-    return await this.prisma.task.delete({
+    return this.prisma.task.delete({
       where: { id },
     });
   }
