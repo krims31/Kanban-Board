@@ -71,6 +71,7 @@ describe('UsersService', () => {
     });
 
     it('throws ConflictException when email already exists (P2002)', async () => {
+      // Arrange
       const dto = {
         username: 'User',
         email: 'a@b.c',
@@ -87,6 +88,7 @@ describe('UsersService', () => {
         }),
       );
 
+      // Act & Assert
       await expect(service.create(dto)).rejects.toThrow(ConflictException);
       await expect(service.create(dto)).rejects.toThrow('Email already exists');
     });
