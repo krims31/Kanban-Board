@@ -93,4 +93,115 @@ describe('UsersService', () => {
       await expect(service.create(dto)).rejects.toThrow('Email already exists');
     });
   });
+
+  describe('save', () => {
+    it('save a hash refresh-token in the data base.', async () => {
+      // Arrange
+      const updatedUser = {
+        id: 'UserId1',
+        username: 'User',
+        email: 'a@b.c',
+        refreshTokenHash: 'hashed-refresh-token',
+        createdAt: new Date(),
+        role: 'USER',
+      };
+
+      (bcrypt.hash as jest.Mock).mockResolvedValue('hashed-refresh-token');
+
+      prisma.user.update.mockResolvedValue(updatedUser);
+      // Act
+      const result = await service.updateRefreshToken(
+        'UserId1',
+        'refresh-token',
+      );
+
+      // Assets
+      expect(result).toEqual(updatedUser);
+      expect(bcrypt.hash).toHaveBeenCalledWith('refresh-token', 10);
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 'UserId1' },
+        data: { refreshTokenHash: 'hashed-refresh-token' },
+      });
+    });
+  });
+
+  describe('clear', () => {
+    it('clear a hash refresh-token.', async () => {
+      // Arrange
+      const clearUser = {
+        id: 'UserId1',
+        username: 'User',
+        email: 'a@b.c',
+        createdAt: new Date(),
+        role: 'USER',
+      };
+
+      prisma.user.update.mockResolvedValue(clearUser);
+
+      // Act
+      const result = await service.clearRefreshToken('UserId1');
+
+      // Assets
+      expect(result).toEqual(clearUser);
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 'UserId1' },
+        data: { refreshTokenHash: null },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          createdAt: true,
+          role: true,
+        },
+      });
+    });
+  });
+
+  describe('findById', () => {
+    it('Find a user by id.', async () => {
+      // Arrange
+      const findByIdUser = {
+        id: 'UserId1',
+        username: 'User',
+        email: 'a@b.c',
+        createdAt: new Date(),
+        role: 'USER',
+      };
+
+      prisma.user.findUnique.mockResolvedValue(findByIdUser);
+
+      // Act
+      const result = await service.findById('UserId1');
+
+      // Assets
+      expect(result).toEqual(findByIdUser);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { id: 'UserId1' },
+      });
+    });
+  });
+
+  describe('findByEmail', () => {
+    it('Find a user by email.', async () => {
+      // Arrange
+      const findByEmailUser = {
+        id: 'UserId1',
+        username: 'User',
+        email: 'a@b.c',
+        createdAt: new Date(),
+        role: 'USER',
+      };
+
+      prisma.user.findUnique.mockResolvedValue(findByEmailUser);
+
+      // Act
+      const result = await service.findByEmail('a@b.c');
+
+      // Assets
+      expect(result).toEqual(findByEmailUser);
+      expect(prisma.user.findUnique).toHaveBeenCalledWith({
+        where: { email: 'a@b.c' },
+      });
+    });
+  });
 });
