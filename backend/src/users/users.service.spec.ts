@@ -50,6 +50,7 @@ describe('UsersService', () => {
         createdAt: new Date('2026-01-01'),
       };
 
+      // Hash password via bcrypt jwt.
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashed-password');
 
       prisma.user.create.mockResolvedValue(createdUser);
@@ -78,6 +79,7 @@ describe('UsersService', () => {
         password: '123',
       };
 
+      // Hash password via bcrypt jwt.
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashed-password');
 
       prisma.user.create.mockRejectedValue(
@@ -106,6 +108,7 @@ describe('UsersService', () => {
         role: 'USER',
       };
 
+      // Hash password via bcrypt jwt.
       (bcrypt.hash as jest.Mock).mockResolvedValue('hashed-refresh-token');
 
       prisma.user.update.mockResolvedValue(updatedUser);
