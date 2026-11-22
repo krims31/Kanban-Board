@@ -16,6 +16,7 @@ type PrismaMock = {
   };
 };
 
+// Projects
 type ProjectsMock = {
   findOne: jest.Mock;
 };
