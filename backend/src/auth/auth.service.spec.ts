@@ -12,6 +12,7 @@ type UsersMock = {
   clearRefreshToken: jest.Mock;
 };
 
+// JwtService for the sign and verify.
 type jwtServiceMock = {
   sign: jest.Mock;
   verify: jest.Mock;
