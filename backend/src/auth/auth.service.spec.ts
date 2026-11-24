@@ -62,6 +62,7 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('create and register user', async () => {
+      // Arrange
       const dto = { username: 'User', email: '@mail.ru', password: '123' };
 
       userMock.create.mockResolvedValue(dto);
