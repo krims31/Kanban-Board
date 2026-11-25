@@ -65,7 +65,7 @@ describe('ProjectsService', () => {
 
   describe('findAllByUser', () => {
     it('find all the users by ownerId and also return all projects', async () => {
-      // What will return the mock.
+      //Arrange (What will return the mock.)
       const projects = [
         {
           id: 'p1',
