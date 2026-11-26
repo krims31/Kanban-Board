@@ -174,6 +174,7 @@ describe('ProjectsService', () => {
       });
     });
 
+    // Throw 404
     it('throw 404 and NOT update, if project not found', async () => {
       prisma.project.findFirst.mockResolvedValue(null);
 
