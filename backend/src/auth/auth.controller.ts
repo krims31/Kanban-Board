@@ -18,7 +18,6 @@ export class AuthController {
     return user;
   }
 
-  // Only for admin
   @Roles('ADMIN')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('admin')
@@ -26,19 +25,16 @@ export class AuthController {
     return user;
   }
 
-  // Registration user
   @Post('register')
   async register(@Body() dto: CreateDto) {
     return await this.authService.register(dto);
   }
 
-  // Login user
   @Post('login')
   async login(@Body() dto: LoginDto) {
     return await this.authService.login(dto);
   }
 
-  // Exit of account
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@CurrentUser() user: Express.User) {
